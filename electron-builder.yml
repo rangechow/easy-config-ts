@@ -1,0 +1,28 @@
+appId: com.easyconfig.app
+productName: EasyConfig
+directories:
+  output: release
+asar: true
+files:
+  - dist/**/*
+  - resources/**/*
+  - "!node_modules/**/*.{md,ts,map}"
+mac:
+  category: public.app-category.developer-tools
+  icon: resources/icon.icns
+  target:
+    - dmg
+    - zip
+win:
+  icon: resources/icon.ico
+  target:
+    - nsis
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+linux:
+  icon: resources/icons
+  target:
+    - AppImage
+    - deb
+  category: Development
