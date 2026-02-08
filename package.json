@@ -1,11 +1,47 @@
 {
-  "name": "easy-config",
+  "name": "easy-config-ts",
   "version": "1.0.0",
-  "description": "EasyConfig - Excel configuration management tool",
-  "main": "dist/main/index.js",
+  "description": "Excel configuration management toolkit - convert Excel to Protobuf and YAML with 5-row header format",
+  "license": "MIT",
+  "author": "zhouyuan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nickelzhou/easy-config-ts"
+  },
+  "keywords": [
+    "excel",
+    "protobuf",
+    "yaml",
+    "config",
+    "game-config",
+    "exceljs",
+    "proto",
+    "data-config"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module",
+  "main": "dist/lib/main/index-lib.js",
+  "module": "dist/lib/main/index-lib.js",
+  "types": "dist/lib/main/index-lib.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/lib/main/index-lib.d.ts",
+      "import": "./dist/lib/main/index-lib.js"
+    }
+  },
+  "files": [
+    "dist/lib/",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:lib": "tsc -p tsconfig.lib.json",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -15,7 +51,8 @@
     "lint:fix": "eslint src/ test/ --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,html}\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,html}\" \"test/**/*.ts\"",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && electron-builder",
+    "prepublishOnly": "npm run build:lib && npm run test"
   },
   "dependencies": {
     "chokidar": "^3.6.0",

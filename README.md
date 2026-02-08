@@ -1,6 +1,6 @@
 # EasyConfig
 
-游戏数据配置管理工具，基于 Electron + React + TypeScript 构建。
+游戏数据配置管理工具，基于 Electron + React + TypeScript 构建。也可作为 npm 库单独使用。
 
 通过 Excel 定义数据配置表（5 行表头格式），自动导出为 Protobuf 描述文件和 YAML 数据文件，实现 Excel 与 Proto/YAML 的双向同步。
 
@@ -123,6 +123,66 @@ data/                          # 数据目录（用户设置）
 | 测试 | Vitest + v8 coverage |
 | 代码质量 | ESLint + Prettier |
 | 打包 | electron-builder |
+
+## 作为 npm 库使用
+
+EasyConfig 的核心转换功能可以作为独立 npm 包使用，无需 Electron 环境。
+
+### 安装
+
+```bash
+npm install easy-config-ts
+```
+
+### API 示例
+
+```typescript
+import {
+  parseExcelToProtobuf,
+  generateProtoFile,
+  exportToProtobuf,
+  exportToYAML,
+  importYAMLToExcel,
+  validateProtoSyntax,
+  extractExcelInfo,
+  createHeaderTemplate,
+  getDefaultTemplate,
+} from 'easy-config-ts';
+
+// Excel -> Protobuf 消息解析
+const messages = await parseExcelToProtobuf('config.xlsx');
+const protoContent = generateProtoFile(messages);
+
+// Excel -> Proto 文件导出
+await exportToProtobuf('config.xlsx', './output');
+
+// Excel -> YAML 导出
+await exportToYAML('config.xlsx', './output');
+
+// YAML -> Excel 导入
+await importYAMLToExcel('config.xlsx');
+
+// Proto 语法校验
+const errors = validateProtoSyntax(protoContent);
+
+// Excel 信息提取
+const info = await extractExcelInfo('config.xlsx');
+console.log(info.sheetCount, info.sheetNames);
+```
+
+### 导出的 API
+
+| 模块 | 主要函数 | 说明 |
+|------|---------|------|
+| Protobuf 导出 | `parseExcelToProtobuf`, `exportToProtobuf`, `generateProtoFile`, `validateDataType` | Excel -> Proto |
+| YAML 导出 | `exportToYAML`, `parseColumnStructure` | Excel -> YAML |
+| YAML 导入 | `importYAMLToExcel` | YAML -> Excel |
+| Proto 校验 | `validateProtoSyntax`, `validateProtoFile`, `formatValidationErrors` | 语法检查 |
+| 信息提取 | `extractExcelInfo`, `formatExcelInfo` | Excel 统计信息 |
+| 表头模板 | `createHeaderTemplate`, `getDefaultTemplate`, `validateSheetName` | 5 行表头 |
+| 临时文件 | `createTmpFileFromYAML`, `deleteTmpFile`, `getFileToOpen` | tmp 文件管理 |
+| 国际化 | `setLocale`, `getLocale`, `t` | 中/英切换 |
+| 常量 | `HEADER_ROW_COUNT`, `DATA_ROW_START`, `SHEET_NAME_SUFFIX` 等 | 共享常量 |
 
 ## 文档
 

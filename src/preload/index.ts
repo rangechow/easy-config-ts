@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { AppNotification, ElectronAPI, FileItem, CreateFileRequest } from '../shared/types';
+import type { AppNotification, FileItem, CreateFileRequest } from '../shared/types';
+import type { ElectronAPI } from '../shared/electron-types';
 
 const api: ElectronAPI = {
   // Directory management
