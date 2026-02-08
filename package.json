@@ -1,13 +1,7 @@
 {
-  "name": "easy-config-ts",
+  "name": "@rangechow/easy-config-ts",
   "version": "1.0.0",
   "description": "Excel configuration management toolkit - convert Excel to Protobuf and YAML with 5-row header format",
-  "license": "MIT",
-  "author": "zhouyuan",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nickelzhou/easy-config-ts"
-  },
   "keywords": [
     "excel",
     "protobuf",
@@ -18,18 +12,28 @@
     "proto",
     "data-config"
   ],
-  "engines": {
-    "node": ">=18"
+  "homepage": "https://github.com/nickelzhou/easy-config-ts#readme",
+  "bugs": {
+    "url": "https://github.com/nickelzhou/easy-config-ts/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickelzhou/easy-config-ts.git"
+  },
+  "license": "MIT",
+  "author": "zhouyuan",
   "type": "module",
-  "main": "dist/lib/main/index-lib.js",
-  "module": "dist/lib/main/index-lib.js",
-  "types": "dist/lib/main/index-lib.d.ts",
   "exports": {
     ".": {
       "types": "./dist/lib/main/index-lib.d.ts",
       "import": "./dist/lib/main/index-lib.js"
     }
+  },
+  "main": "dist/lib/main/index-lib.js",
+  "types": "dist/lib/main/index-lib.d.ts",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
   },
   "files": [
     "dist/lib/",
@@ -37,7 +41,6 @@
     "README.md",
     "CHANGELOG.md"
   ],
-  "sideEffects": false,
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -80,5 +83,10 @@
     "vite-plugin-electron": "^0.28.8",
     "vite-plugin-electron-renderer": "^0.14.6",
     "vitest": "^2.1.0"
-  }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "module": "dist/lib/main/index-lib.js",
+  "sideEffects": false
 }
