@@ -29,12 +29,8 @@
       "import": "./dist/lib/main/index-lib.js"
     }
   },
-  "main": "dist/lib/main/index-lib.js",
+  "main": "dist/main/index.js",
   "types": "dist/lib/main/index-lib.d.ts",
-  "directories": {
-    "doc": "doc",
-    "test": "test"
-  },
   "files": [
     "dist/lib/",
     "LICENSE",

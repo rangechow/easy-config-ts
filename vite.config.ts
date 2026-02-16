@@ -30,8 +30,16 @@ export default defineConfig({
         vite: {
           build: {
             outDir: path.join(projectRoot, 'dist/preload'),
+            // Electron preload 脚本必须使用 CommonJS 格式
+            lib: {
+              entry: path.join(projectRoot, 'src/preload/index.ts'),
+              formats: ['cjs'],
+            },
             rollupOptions: {
               external: ['electron'],
+              output: {
+                entryFileNames: 'index.js',
+              },
             },
           },
         },

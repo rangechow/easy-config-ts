@@ -1,6 +1,10 @@
 import { app, BrowserWindow, ipcMain, dialog, session } from 'electron';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import fs from 'fs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import { loadConfig, saveConfigAsync } from './config';
 import { writeLog } from './logger';
 import { buildFileItems } from './file-items';
@@ -102,8 +106,15 @@ function createWindow(): void {
   }
 
   // In dev mode, load from vite dev server; in production, load from dist
+  // 转发渲染进程控制台日志到主进程终端，便于调试
+  mainWindow.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+    const levelStr = ['LOG', 'WARN', 'ERROR'][level] || 'INFO';
+    console.log(`[Renderer ${levelStr}] ${message} (${sourceId}:${line})`);
+  });
+
   if (process.env.VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
+    mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
   }
@@ -311,16 +322,20 @@ app.whenReady().then(() => {
   registerIpcHandlers();
 
   // Set Content Security Policy
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [
-          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:",
-        ],
-      },
+  // 开发模式下不设置 CSP，避免阻止 Vite dev server 的内联脚本和 HMR
+  const isDev = !!process.env.VITE_DEV_SERVER_URL;
+  if (!isDev) {
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          'Content-Security-Policy': [
+            "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:",
+          ],
+        },
+      });
     });
-  });
+  }
 
   createWindow();
 
